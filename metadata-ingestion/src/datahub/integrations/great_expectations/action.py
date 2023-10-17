@@ -774,6 +774,12 @@ def make_dataset_urn_from_sqlalchemy_uri(
         return None
 
     dataset_name = f"{schema_name}.{table_name}"
+    # assertion for elasticsearch - bonze, GE add "default" schema when make urn but datahub urn origin does contain "default."
+    # 
+    if data_platform == "elasticsearch" or platform_alias == "elasticsearch":
+        if schema_name="default":
+            dataset_name = f"{table_name}"
+    # end of assertion for elasticsearch - bonze
 
     dataset_urn = builder.make_dataset_urn_with_platform_instance(
         platform=data_platform if platform_alias is None else platform_alias,
