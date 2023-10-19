@@ -1,5 +1,6 @@
 from datahub.utilities._markupsafe_compat import MARKUPSAFE_PATCHED
 
+import os
 import json
 import logging
 import sys
@@ -805,7 +806,6 @@ class DecimalEncoder(json.JSONEncoder):
             return str(o)
         return super(DecimalEncoder, self).default(o)
 
-
 def convert_to_string(var: Any) -> str:
     try:
         tmp = (
@@ -821,3 +821,12 @@ def convert_to_string(var: Any) -> str:
 
 def warn(msg):
     logger.warning(msg)
+
+# enable schema name, table name for pandas/spark datafile - bonze
+def get_str_env_variable(key: str) -> string:
+    value = os.environ.get(key)
+    if value is None:
+        return None
+    else:
+        return value
+# end of enable schema name, table name for pandas/spark datafile - bonze
